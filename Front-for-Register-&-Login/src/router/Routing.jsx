@@ -4,8 +4,8 @@ import PublicLayout from "../components/layout/public/PublicLayout";
 import PrivateLayout from "../components/layout/private/PrivateLayout";
 import Private from "../components/layout/private/Private";
 import Error404 from "../components/Error404/Error404";
-import { Register } from "../components/user/Register";
-import { Login } from "../components/user/Login";
+import { Register } from "../components/user/register/Register";
+import { Login } from "../components/user/login/Login";
 import { AuthProvider } from "../context/AuthProvider";
 import { Logout } from "../components/user/Logout";
 

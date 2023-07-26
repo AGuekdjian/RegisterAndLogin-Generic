@@ -1,0 +1,43 @@
+.container-lists__menu-list {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.menu-list__item {
+    margin: 0 12px;
+}
+
+.list-end__name {
+    font-weight: bold;
+    color: #2e4053;
+    transition: 300ms all ease;
+}
+
+.list-end__name:hover {
+    color: #000;
+    cursor: pointer;
+}
+
+.dropdownItem__menu__open {
+    background: hsl(190, 70%, 70%);
+}
+
+.dropdownItem__menu__open:hover {
+    background: hsl(190, 70%, 70%);
+}
+
+.btn-secondary {
+    background: hsl(190, 95%, 30%);
+    border: none;
+    width: 160px;
+    font-weight: bold;
+}
+
+.btn-secondary:hover {
+    background: hsl(190, 95%, 30%);
+}
+
+.menu-list__title {
+    margin-left: 6px;
+}

@@ -1,0 +1,7 @@
+.layout__public {
+    background: hsl(210, 50%, 10%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
