@@ -1,0 +1,61 @@
+name: Deploy backend with nodejs to AWS EC2
+
+on:
+  push:
+    paths:
+      - backend-generic/**/*
+    branches: [main]
+
+jobs:
+  avoid_reduncy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Cancel Previous Redundant Builds
+        uses: styfle/cancel-workflow-action@0.12.0
+        with:
+          access_token: ${{ github.token }}
+
+  dependencies:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4.0.0
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "backend-generic/*"
+      - name: Installing dependencies
+        run: cd backend-generic && npm install
+
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4.0.0
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "backend-generic/*"
+      - name: Login to docker hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build docker image
+        run: docker build -t aguekdjian/backend-node:latest backend-generic/.
+      - name: Publish image to docker hub
+        run: docker push aguekdjian/backend-node:latest
+
+  deploy:
+    needs: build
+    runs-on: aws-ec2-node
+    steps:
+      - name: Login to docker hub
+        run: sudo docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Pull Image from docker hub
+        run: sudo docker pull aguekdjian/backend-node:latest
+      - name: Delete old container
+        run: sudo docker rm -f backend-node-container
+      - name: Run docker container
+        run: sudo docker run -d -p 8080:8080 --name backend-node-container -e USER_DBL=${{secrets.USER_DB}} -e PASSWORD_DB=${{secrets.PASSWORD_DB}} -e NAME_DB=${{secrets.NAME_DB}} -e PORT=${{secrets.PORT}} -e JWT_SECRET=${{secrets.JWT_SECRET}} aguekdjian/backend-node:latest
