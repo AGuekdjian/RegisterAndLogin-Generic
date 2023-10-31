@@ -21,7 +21,7 @@ app.use("/api/user", UserRoutes);
 // Ruta de prueba
 app.get("/", (req, res) => {
   return res.status(200).json({
-    message: "Aplicacion iniciada!!",
+    message: "Aplicacion iniciada!!!",
   });
 });
 
